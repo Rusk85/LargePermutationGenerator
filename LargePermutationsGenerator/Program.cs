@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StorageLayer;
 
 namespace LargePermutationsGenerator
 {
@@ -10,10 +11,12 @@ namespace LargePermutationsGenerator
     {
         static void Main(string[] args)
         {
-            GenerateLargePermutations();
+            Program p = new Program();
+            p.TestStorageLayer();
+            p.GenerateLargePermutations();
         }
 
-        private static void GenerateLargePermutations()
+        private void GenerateLargePermutations()
         {
             IOutputBuffer buffer = new OutputBuffer(100000);
             char[] alphabetList = Enumerable.Range('A', 26).Select(x => (char) x).ToArray();
@@ -31,6 +34,12 @@ namespace LargePermutationsGenerator
             string permutationContent = alphabet + zeroToNine; 
             PermutationGenerator pg = new PermutationGenerator(buffer, permutationContent, 64);
             pg.StartPermuting();
+        }
+
+        private void TestStorageLayer()
+        {
+            Core core = new Core();
+            core.UpradeDatabase();
         }
     }
 }
