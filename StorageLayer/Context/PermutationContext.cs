@@ -28,34 +28,12 @@ namespace StorageLayer.Context
                 .HasKey(key => key.Permutation)
                 .ToTable($"{nameof(LargePermutation)}s")
                 .Property(p => p.Permutation)
-                .HasColumnAnnotation(IndexAnnotation.AnnotationName,
-                        GenerateUniqueConstraint<LargePermutation>("Permutation"))
                 .HasMaxLength(64)
                 .IsUnicode()
                 .IsRequired();
 
 
             base.OnModelCreating(modelBuilder);
-        }
-
-        private IndexAnnotation GenerateUniqueConstraint<TEntity>(string propertyName)
-        {
-            Random random = new Random();
-            byte[] randomBytes = new byte[1000];
-            random.NextBytes(randomBytes);
-            // 90 - 108
-            char[] randomSuffix = randomBytes.Where(b => b >= 65 && b <= 90)
-                .Select(b => Convert.ToChar(b))
-                .ToArray();
-            if (randomSuffix.Length > 5)
-            {
-                randomSuffix = randomSuffix.Take(5).ToArray();
-            }
-            string randomSuffixAsString = randomSuffix.Aggregate("", (a, b) => a + Convert.ToString(b));
-            string uniqueConstraintName = $"UX_{typeof(TEntity).Name}_{propertyName}_{randomSuffixAsString}";
-            IndexAttribute newIndexAttribute = new IndexAttribute(uniqueConstraintName){IsUnique = true};
-            IndexAnnotation newIndexAnnotation = new IndexAnnotation(newIndexAttribute);
-            return newIndexAnnotation;
         }
     }
 }
