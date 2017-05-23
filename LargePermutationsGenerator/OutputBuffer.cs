@@ -11,12 +11,6 @@ using System.Threading.Tasks;
 namespace LargePermutationsGenerator
 {
 
-    interface IOutputBuffer
-    {
-        void AddToBuffer(string element);
-        void AddToBuffer(char[] element);
-    }
-
     class OutputBuffer : IOutputBuffer
     {
 
@@ -80,7 +74,7 @@ namespace LargePermutationsGenerator
             } else if (_charBuffer.Any())
             {
                 string[] tmpBuffer = new string[_charBuffer.Count];
-                for (var index = 0; index < _charBuffer.Count; index++)
+                for (int index = 0; index < _charBuffer.Count; index++)
                 {
                     char[] chars = _charBuffer[index];
                     string tmpString = null;

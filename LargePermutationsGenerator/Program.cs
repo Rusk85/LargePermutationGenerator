@@ -12,13 +12,15 @@ namespace LargePermutationsGenerator
         static void Main(string[] args)
         {
             Program p = new Program();
-            p.TestStorageLayer();
+            //p.TestStorageLayer();
             p.GenerateLargePermutations();
         }
 
         private void GenerateLargePermutations()
         {
-            IOutputBuffer buffer = new OutputBuffer(100000);
+            //IOutputBuffer buffer = new OutputBuffer(100000);
+            IOutputBuffer dbBuffer = new DatabaseOutputBuffer(10000);
+            new Core().RecreateDatabase();
             char[] alphabetList = Enumerable.Range('A', 26).Select(x => (char) x).ToArray();
             string alphabet = null;
             foreach (char c in alphabetList)
@@ -32,14 +34,16 @@ namespace LargePermutationsGenerator
                 zeroToNine += numAsString;
             }
             string permutationContent = alphabet + zeroToNine; 
-            PermutationGenerator pg = new PermutationGenerator(buffer, permutationContent, 64);
+            PermutationGenerator pg = new PermutationGenerator(dbBuffer, permutationContent, 64);
             pg.StartPermuting();
         }
 
         private void TestStorageLayer()
         {
             Core core = new Core();
-            core.UpradeDatabase();
+            core.RecreateDatabase();
+            core.TestByteEncoding();
+            Environment.Exit(0);
         }
     }
 }
